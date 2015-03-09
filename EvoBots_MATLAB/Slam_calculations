@@ -1,0 +1,22 @@
+function Slam_calculations()
+if(str2num(data{11})<32 && str2num(data{11})>25)
+        current_y_position; 
+        landmark_y_location=current_y_position+str2num(data{11})*sind(robot_orientation)
+        landmark_x_location=current_x_position+str2num(data{11})*cosd(robot_orientation)
+        scatter((landmark_x_location),landmark_y_location)
+    end
+    
+    if(str2num(data{10})<40 && str2num(data{10})>24)
+        landmark_y_location=current_y_position+(str2num(data{10})*sind(robot_orientation+45))
+        landmark_x_location=current_x_position+(str2num(data{10})*cosd(robot_orientation+45))
+        scatter((landmark_x_location),landmark_y_location)
+    end
+     if(str2num(data{12})<40 && str2num(data{12})>24)
+        landmark_y_location=current_y_position+(str2num(data{10})*sind(robot_orientation-45))
+        landmark_x_location=current_x_position+(str2n   um(data{10})*cosd(robot_orientation-45))
+        scatter((landmark_x_location),landmark_y_location)
+    end
+    axis([-100 100 -100 100]);
+    grid on;
+    hold on;
+    pause(0.008);

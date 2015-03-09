@@ -1,0 +1,15 @@
+Steps to Run the EvoBot...
+
+1) Check if both mice are switch on.
+2) Clear the Video-Images folder, clear the Z-drive folders with the mouse data.
+3) Check IP Address of the Base Station and confirm that it is correct in the Satellite's PCs code
+4) Turn on WiFi camera on robot and wait (~20s) for the SSID to be broadcasted
+5) Connect to the SSID on Wifi 3
+6) Connect to SUTD_Staff on Wifi 2
+7) Check if Z-drive connection and Camera connection are still good
+8) Get MATLAB ready on both computer and set to the correct directories
+9) Cue up "EvoBotSLAM" on desktop and "remote_right_mouse" on the satellite PC
+10) Start EvoBotSLAM first then remote_right_mouse, but with only millisecond lag
+11) You will be prompted for COM port, give the COM of your robot, if it fails here, do "clean" and redo the above steps
+12) Start video recording on the desktop computer and your robot should start moving now...
+

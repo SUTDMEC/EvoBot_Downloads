@@ -1,0 +1,58 @@
+﻿Merge remote-tracking branch 'origin/master'
+
+Conflicts:
+	EvoBotModel_2.m
+#
+# It looks like you may be committing a merge.
+# If this is not correct, please remove the file
+#	.git/MERGE_HEAD
+# and try again.
+
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch and 'origin/master' have diverged,
+# and have 1 and 8 different commits each, respectively.
+#   (use "git pull" to merge the remote branch into yours)
+#
+# All conflicts fixed but you are still merging.
+#   (use "git commit" to conclude merge)
+#
+# Changes to be committed:
+#
+#	modified:   Bluetooth_initialization.m
+#	modified:   EvoBotModel_2.m
+#	modified:   EvoBotSLAM.m
+#	modified:   Throwbot_GUI/README.txt
+#	new file:   Throwbot_GUI/Robot_Class/Libraries/Calibration_data.txt
+#	new file:   Throwbot_GUI/Robot_Class/Libraries/DataCollection.m
+#	new file:   Throwbot_GUI/Robot_Class/Libraries/Data_format.txt
+#	new file:   Throwbot_GUI/Robot_Class/Libraries/GUI/Camera.m
+#	new file:   Throwbot_GUI/Robot_Class/Libraries/GUI/RobotGUI (SUTD_EvoBots's conflicted copy 2014-04-10).m
+#	new file:   Throwbot_GUI/Robot_Class/Libraries/GUI/RobotGUI.fig
+#	new file:   Throwbot_GUI/Robot_Class/Libraries/GUI/RobotGUI.m
+#	new file:   Throwbot_GUI/Robot_Class/Libraries/GUI/Slam_calculations.m
+#	new file:   Throwbot_GUI/Robot_Class/Libraries/GUI/back.png
+#	new file:   Throwbot_GUI/Robot_Class/Libraries/GUI/evobotslam.m
+#	new file:   Throwbot_GUI/Robot_Class/Libraries/GUI/forward.png
+#	new file:   Throwbot_GUI/Robot_Class/Libraries/GUI/readSensors.m
+#	new file:   Throwbot_GUI/Robot_Class/Libraries/GUI/timerCallback.m
+#	new file:   Throwbot_GUI/Robot_Class/Libraries/RobotClass.asv
+#	modified:   Throwbot_GUI/Robot_Class/Libraries/RobotClass.m
+#	new file:   Throwbot_GUI/Robot_Class/Libraries/RobotCom.asv
+#	modified:   Throwbot_GUI/Robot_Class/Libraries/RobotCom.m
+#	new file:   Throwbot_GUI/Robot_Class/Libraries/RobotCommunication_OLD.m
+#	new file:   Throwbot_GUI/Robot_Class/Libraries/RobotData.asv
+#	modified:   Throwbot_GUI/Robot_Class/Libraries/RobotData.m
+#	new file:   Throwbot_GUI/Robot_Class/Libraries/RobotGUI.m
+#	new file:   Throwbot_GUI/Robot_Class/Libraries/RobotMap.asv
+#	new file:   Throwbot_GUI/Robot_Class/Libraries/RobotMap.m
+#	new file:   Throwbot_GUI/Robot_Class/Libraries/python communication code/README.txt
+#	new file:   Throwbot_GUI/Robot_Class/Libraries/stocks.m
+#	new file:   Throwbot_GUI/Robot_Class/main_throwbot.asv
+#	modified:   Throwbot_GUI/Robot_Class/main_throwbot.m
+#	modified:   optical_theta.m
+#	modified:   readSensors.m
+#
+

@@ -1,0 +1,3 @@
+str=strcat('tggaerseghrtjhnryshnhnetyj','hrnngdshsdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddgbhgbbbbb');
+str=char(str);
+disp(str)
