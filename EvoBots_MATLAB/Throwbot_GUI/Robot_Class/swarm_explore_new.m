@@ -25,7 +25,7 @@ path_log={};
 %%%%%%%%%%%%%%%%%%%%%%%%Get all IR points%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 for ir_pos=1:3
     
-if IR(ir_pos)<=320&&IR(ir_pos)~=-1
+if IR(ir_pos)<=500&&IR(ir_pos)~=-1
     if ir_pos==2
         obs_C_x=curr_states{bot_num}(1)+((IR(ir_pos))/1000)*cos((curr_states{bot_num}(3)));
         obs_C_y=curr_states{bot_num}(2)+((IR(ir_pos))/1000)*sin((curr_states{bot_num}(3)));        
@@ -272,12 +272,12 @@ if angle_changed==0||IR(2)<=400%&&isequal(angle_reached,ones(1,num_bots))
             end
             %Turn randomly
         end
-    elseif IR(1)<250
-        cmd=strcat('w',num2str(round(70)),';',num2str(round(30)),';',num2str(300),';');
-        bot.write(1,cmd);
-    elseif IR(3)<250
-        cmd=strcat('w',num2str(round(30)),';',num2str(round(70)),';',num2str(300),';');
-        bot.write(1,cmd);
+%     elseif IR(1)<250
+%         cmd=strcat('w',num2str(round(70)),';',num2str(round(30)),';',num2str(300),';');
+%         bot.write(1,cmd);
+%     elseif IR(3)<250
+%         cmd=strcat('w',num2str(round(30)),';',num2str(round(70)),';',num2str(300),';');
+%         bot.write(1,cmd);
     else
         cmd=strcat('w',num2str(round(50)),';',num2str(round(50)),';',num2str(300),';');
         bot.write(1,cmd);
