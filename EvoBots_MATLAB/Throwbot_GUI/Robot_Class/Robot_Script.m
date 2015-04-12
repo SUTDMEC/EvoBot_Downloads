@@ -1,4 +1,4 @@
-function Robot_Script(log_path, bt, t_end,thet_con,traj_cont,rc,pos)
+function Robot_Script(log_path, bt, t_end,thet_con,traj_cont,rc,pos,area_explore)
 
 %This file works a little bit for multiple robot
 %Try running 'Robot_Script' instead
@@ -36,13 +36,13 @@ for i = 1:robot_num
     pause(0.1);
     if strcmp(s(i).remotename,'Evobot_30')
         x(i).write(1,'M100;96;');
-        x(i).write(1,'k7333;8037;30000;');
+        x(i).write(1,'k10200;9100;30000;');
     elseif strcmp(s(i).remotename,'Evobot_10')
         x(i).write(1,'M100;98;');
         x(i).write(1,'k8200;9000;30000;');
     elseif strcmp(s(i).remotename,'Evobot_01')
         x(i).write(1,'M100;99;');
-        x(i).write(1,'k7750;8500;30000;');
+        x(i).write(1,'k6800;4500;30000;');
     elseif strcmp(s(i).remotename,'Evobot_211')||strcmp(s(i).remotename,'Evobot_21')
         x(i).write(1,'M100;98;');
         x(i).write(1,'k8650;9475;30000;');
@@ -51,11 +51,16 @@ for i = 1:robot_num
         x(i).write(1,'k9500;10400;30000;');
     elseif strcmp(s(i).remotename,'Evobot_03')
         x(i).write(1,'M97;100;');
-        x(i).write(1,'k10100;11050;30000;');
+        x(i).write(1,'k14500;11200;30000;');
     elseif strcmp(s(i).remotename,'Evobot_11')
         x(i).write(1,'M100;92;');
         x(i).write(1,'k5000;5000;30000;');
-        
+    elseif strcmp(s(i).remotename,'Evobot_05')
+        x(i).write(1,'M100;100;');
+        x(i).write(1,'k10000;13500;30000;');
+    elseif strcmp(s(i).remotename,'Evobot_36')
+        x(i).write(1,'M100;100;');
+        x(i).write(1,'k8000;14000;30000;');
     end
     
     
@@ -96,6 +101,14 @@ error_hist{i}=[];
 prev_tic_R(i)=x(i).data.column(14)/10600;
 prev_tic_L(i)=x(i).data.column(13)/10600;
 vel_hist=[];
+obstacles=[];
+visit_costmap=[];
+visited_pts=[];
+max_x=0;
+max_y=0;
+counter=0;
+angle_reached(i)=0;
+flipped_flag_log{i}=[];
 cnt=1;
 end
 t1=zeros(1,robot_num);
@@ -104,11 +117,19 @@ Ts=t1;
 v1=0;
 v2=0;
 start_time=now*ones(1,robot_num);
+target_bot=0;
+target_pos=[];
+angle_changed=0;
 
-while now<(t_end)%+15/60/60/24)
+
+for i=1:robot_num
+    flushinput(x(i).bt.s);
+    flushoutput(x(i).bt.s);
+end
+
+while now<(t_end+15/60/60/24)
  
     count = count + 1;   %display this counter - show that program is running
-    
 
     for i = 1:robot_num
         t1(i) = x(i).data.column(1);
@@ -146,6 +167,7 @@ while now<(t_end)%+15/60/60/24)
     if Ts(i)>0
             if ekf_count(i)==1
                 thet_initial(i)=deg2rad(x(i).data.column(9))-pos{i}(3);
+                prev_theta(i)=thet_initial(i);
             end
             optData.d_x=x(i).data.column(10);
             optData.d_y=x(i).data.column(11);
@@ -155,7 +177,6 @@ while now<(t_end)%+15/60/60/24)
             enc_vel_R(i)=(current_tic_R(i)-prev_tic_R(i))/Ts(i);
             prev_tic_L(i)=current_tic_L(i);
             prev_tic_R(i)=current_tic_R(i);
-            
             theta_hist{i}=[theta_hist{i} (deg2rad(x(i).data.column(9)))-(thet_initial(i))];
             theta_hist{i}=unwrap(theta_hist{i});
             
@@ -166,8 +187,8 @@ while now<(t_end)%+15/60/60/24)
             end
             [opt_vel_1, opt_vel_2]=mouseVel(optData,d_theta,Ts(i),49/1000);
 %             [enc_vel_1, enc_vel_2]=mouseVel(encData,d_theta,Ts(i),110/1000);
-             z{i}=[theta_hist{i}(end);  opt_vel_1; opt_vel_2; opt_vel_1; opt_vel_2];
-%             z{i}=[theta_hist{i}(end);  enc_vel_R(i); enc_vel_L(i); enc_vel_R(i); enc_vel_L(i)];
+%              z{i}=[theta_hist{i}(end);  opt_vel_1; opt_vel_2; opt_vel_1; opt_vel_2];
+            z{i}=[theta_hist{i}(end);  enc_vel_R(i); enc_vel_L(i); enc_vel_R(i); enc_vel_L(i)];
              if ekf_count(i)==1
                  state_x{i}(1)=pos{i}(1);
                  state_x{i}(2)=pos{i}(2);
@@ -209,6 +230,40 @@ while now<(t_end)%+15/60/60/24)
                     elseif thet_con==1
                         %%%%Run in heading consensus mode
                     [mean_angle,obst,c,c_obst]=auto_explore(x(i),1,mean_angle,prev,i,thet_con,c,c_obst);
+                    elseif area_explore==1
+                        
+                           %if optical velocity is 0 and encoder velocity
+                           %is not, then raise flippedflag
+                           avg_enc_vel= (enc_vel_L(i)+enc_vel_R(i))/2;
+                           avg_opt_vel=(opt_vel_1+opt_vel_2)/2;
+                           if abs(avg_enc_vel-avg_opt_vel)>0.04
+                               flipped_flag=1;
+                           else flipped_flag=0;
+                           end
+                           flipped_flag_log{i}=[flipped_flag_log{i};flipped_flag];
+                           if length(flipped_flag_log{i})>10
+                               flipped_flag_log{i}=[];
+                           end
+                           if sum(flipped_flag_log{i})>7
+                               target_bot=i;
+                           end                        
+%                         [map,obstacles,botx,boty,costmap,max_x,max_y,visit_costmap,counter]=swarm_explore(x(i),state_x,state_hist,i,obstacles,robot_num,max_x,max_y,visit_costmap,counter);
+                           if target_bot>0
+                               target_pos=[state_x{target_bot}(2) state_x{target_bot}(1)];
+                               [obs_map,map,obstacles,visited_pts,fin_map,angle_reached,prev_theta,resolution,min_x,min_y,paths,angle_changed,mov_theta]=swarm_explore_new(x(i),state_x,state_hist,i,obstacles,robot_num,visited_pts,angle_reached,prev_theta,target_bot,target_pos,angle_changed);
+                           end
+                           
+                           if target_bot==0
+                           if angle_changed==1
+                               [angle_changed,angle_reached]=heading_control(x(i),mov_theta,state_x{i}(3),i,angle_reached,robot_num);
+                           else [obs_map,map,obstacles,visited_pts,fin_map,angle_reached,prev_theta,resolution,min_x,min_y,paths,angle_changed,mov_theta]=swarm_explore_new(x(i),state_x,state_hist,i,obstacles,robot_num,visited_pts,angle_reached,prev_theta,target_bot,target_pos,angle_changed);
+                           end
+                           else
+                               path_follow()
+                           end
+%                            new_curr_pos=[round(((state_x{i}(2))*resolution*1000))+abs(min_x)+1 round(((state_x{i}(1))*resolution*1000))+abs(min_y)+1 state_x{i}(3)];
+
+                           %                         length(obstacles)
                     elseif rc==1
                         remote_control(x(i))
                     else
@@ -305,6 +360,27 @@ while now<(t_end)%+15/60/60/24)
     end
     
 end
+% if exist('map')
+% scatter(map(:,1),map(:,2),'k')
+% axis([botx-1200 botx+1200 boty-1200 boty+1200])
+% save visit_costmap visit_costmap
+% save costmap costmap
+% save map map
+% end
+if exist('map')
+    if length(map)>0
+        scatter(map(:,2),map(:,1),'k')
+        axis([-1200 1200 -1200 1200])
+    end
+% save visit_costmap visit_costmap
+% save costmap costmap
+save map map
+save visited_pts visited_pts
+save fin_map fin_map
+save obs_map obs_map
+save paths paths
+end
+
 save state_hist state_hist
 save raw_dat raw_dat
 save error_hist error_hist

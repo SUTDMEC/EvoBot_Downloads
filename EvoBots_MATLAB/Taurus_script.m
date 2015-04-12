@@ -17,6 +17,7 @@ clc
 thet_con=0;
 traj_cont=0;
 rc=0;
+area_explore=0;
 try
 
 main_dir=pwd;%main directory of this package
@@ -118,6 +119,8 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%Run Robot_Script to run the robots%%%%%%%%%%%%%%
 cd(strcat(main_dir,'\Throwbot_GUI\Robot_Class'))
+area_explore=input('Do you want to run in area exploration mode? 0-no/1-yes');
+if area_explore==0
 thet_con=input('Do you want to run in theta consensus mode? 0-no/1-yes');
 if thet_con==0
 traj_cont=input('Do you want to run in trajectory controller mode? 0-no/1-yes');
@@ -125,7 +128,10 @@ if traj_cont==0
     rc=input('Do you want to run in remote control mode? 0-no/1-yes');
 end
 end
-if thet_con==1
+end
+if area_explore==1
+    mode='Area Exploration Mode';
+elseif thet_con==1
     mode='Heading Consensus Mode';
 elseif traj_cont==1
     mode='Trajectory Controller Mode';
@@ -137,7 +143,7 @@ disp('Beginning Run...');
 disp(mode);
 t_start=now;%record current time
 t_end=t_start+(delta_t/60/60/24);%set ending time as current time plus delta_t, converted to a fraction of a day
-Robot_Script(strcat(main_dir,'\Sensor_logs\',test_folder,'\data'), bt, t_end,thet_con,traj_cont,rc,pos);%call Robot_Script
+Robot_Script2(strcat(main_dir,'\Sensor_logs\',test_folder,'\data'), bt, t_end,thet_con,traj_cont,rc,pos,area_explore);%call Robot_Script
 disp('Run complete.')
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

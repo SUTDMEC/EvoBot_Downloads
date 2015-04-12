@@ -4,7 +4,11 @@ function remote_control(robot_h)
   %robot in remote control mode
   bot_ip=input('5 for straight, 1 for left, 3 for right, 2 for back');
   if bot_ip==5
+      cmd='w150;150;10000;';%move straight at full speed for 10 s
+  elseif bot_ip==4
       cmd='w100;100;10000;';%move straight at full speed for 10 s
+  elseif bot_ip==0
+      cmd='w50;50;10000;';%move straight at full speed for 10 s
   elseif bot_ip==2
       cmd='w-100;-100;1000;';%move back at full speed for 1 s
   elseif bot_ip==3

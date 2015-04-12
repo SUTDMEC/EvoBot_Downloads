@@ -120,7 +120,7 @@ end
 %     cmd=('w100;30;200;');
 % v1=-30;
 % v2=30;
-%      cmd=strcat('w',num2str(round(50)),';',num2str(round(60)),';',num2str(durationF),';');
+%    cmd=strcat('w',num2str(round(50)),';',num2str(round(50)),';',num2str(durationF),';');
     robot_h.write(n,cmd);
 %     toc
 end
