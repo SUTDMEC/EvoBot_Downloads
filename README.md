@@ -1,7 +1,7 @@
 # EvoBot_Downloads
 EvoBot body design, PCB schematics, firmware and MATLAB code base
 
-1. EvoBot_MATLAB:
+1. EvoBots_MATLAB:
 
 This is a MATLAB library with various functions for controlling the EvoBot platform.
 
